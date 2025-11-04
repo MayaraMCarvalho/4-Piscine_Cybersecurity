@@ -1,6 +1,6 @@
 # Arachnida - Module 00 - Cybersecurity Piscine (42 São Paulo)
 
-Available in: [🇧🇷 Português](README.pt.md)
+Available in: [🇧🇷 Português](Readme.pt.md)
 
 ![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)
 
