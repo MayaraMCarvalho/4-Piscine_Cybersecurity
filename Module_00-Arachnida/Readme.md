@@ -1,10 +1,12 @@
-# Arachnida - Módulo 00 - Piscine Cybersecurity (42 São Paulo)
+# 🕸️ Arachnida - Módulo 00 - Piscine Cybersecurity (42 São Paulo)
 
 Available in: [🇺🇸 English](Readme.en.md)
 
 ![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)
 
 Este projeto é uma introdução ao Web Scraping e à Análise de Metadados, como parte da Piscina de Cibersegurança. O projeto consiste em duas ferramentas de linha de comando: `spider` e `scorpion`, ambas desenvolvidas em Python.
+
+---
 
 ## 📜 Índice
 
@@ -15,6 +17,8 @@ Este projeto é uma introdução ao Web Scraping e à Análise de Metadados, com
 * [Modo de Uso](#-modo-de-uso)
 * [Autor](#-autor)
 
+---
+
 ## 🕸️ Visão Geral
 
 ### 🕷️ Spider
@@ -24,6 +28,8 @@ O `spider` é um web scraper recursivo projetado para baixar imagens de um site.
 ### 🦂 Scorpion
 
 O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele lê os dados ocultos em arquivos de imagem (como `.jpg`, `.png`, etc.) e exibe informações sensíveis como data de criação, modelo da câmera, e às vezes até coordenadas GPS.
+
+---
 
 ## ✨ Funcionalidades
 
@@ -39,6 +45,8 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 * Exibe dados EXIF e outros metadados básicos.
 * Compatível com as mesmas extensões que o `spider`.
 
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 * **Python 3.x**
@@ -46,6 +54,8 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 * **`BeautifulSoup4`**: Para fazer o parsing do HTML e encontrar links (`<a>`) e tags de imagem (`<img>`).
 * **`Pillow` (PIL)**: Para ler e extrair os metadados EXIF dos arquivos de imagem.
 * **`argparse`**: (Biblioteca nativa) Para criar as interfaces de linha de comando (`-r`, `-l`, `-p`).
+
+---
 
 ## 🚀 Instalação e Setup
 
@@ -83,6 +93,8 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
     # Ou renomeie seus arquivos para spider.py e scorpion.py e execute com 'python3 spider.py ...'
     ```
 
+---
+
 ## 🔧 Usage
 
 ### 🕷️ Spider
@@ -115,5 +127,9 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 ./scorpion ./data/imagem1.jpg ./data/imagem2.png
 ```
 
+---
+
 ## 👩🏻 Autora
 [Mayara Carvalho / macarval]
+
+
