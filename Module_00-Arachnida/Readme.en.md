@@ -105,4 +105,3 @@ The `scorpion` is a metadata (EXIF) analyzer for image files. It reads the hidde
 
 ## 👩🏻 Author
 [Mayara Carvalho / macarval]
-cd 4
