@@ -101,6 +101,31 @@ The `scorpion` is a metadata (EXIF) analyzer for image files. It reads the hidde
 ./spider [-r] [-l N] [-p PATH] URL
 ```
 
+#### 📋 Examples:
+
+```bash
+# 1. Download images from the page (no recursion) to ./data/
+./spider [https://example.com](https://example.com)
+```
+
+```bash
+# 2. Recursively download with depth 2, saving to ./my_images/
+./spider -r -l 2 -p ./my_images/ [https://example.com](https://example.com)
+```
+
+### 🦂 Scorpion
+
+```bash
+./scorpion FILE1 [FILE2 ...]
+```
+
+#### 📋 Example:
+
+```bash
+# Analyze the metadata of two images
+./scorpion ./data/image1.jpg ./data/image2.png
+```
+
 ---
 
 ## 👩🏻 Author
