@@ -61,7 +61,7 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://[URL_DO_SEU_REPOSITORIO] arachnida
+    git clone https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida arachnida
     cd arachnida
     ```
 
