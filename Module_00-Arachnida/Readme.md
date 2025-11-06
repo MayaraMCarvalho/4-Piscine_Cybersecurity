@@ -10,12 +10,12 @@ Este projeto é uma introdução ao Web Scraping e à Análise de Metadados, com
 
 ## 📜 Índice
 
-* [Visão Geral](#-visão-geral)
-* [Funcionalidades](#-funcionalidades)
-* [Tecnologias Utilizadas](#-tecnologias-utilizadas)
-* [Instalação e Setup](#-instalação-e-setup)
-* [Modo de Uso](#-modo-de-uso)
-* [Autor](#-autor)
+* [Visão Geral](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#%EF%B8%8F-vis%C3%A3o-gerall)
+* [Funcionalidades](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-funcionalidades)
+* [Tecnologias Utilizadas](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#%EF%B8%8F-tecnologias-utilizadas)
+* [Instalação e Setup](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-instala%C3%A7%C3%A3o-e-setup)
+* [Modo de Uso](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-modo-de-uso)
+* [Autor](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-autora)
 
 ---
 
@@ -95,7 +95,7 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 
 ---
 
-## 🔧 Usage
+## 🔧 Modo de Uso
 
 ### 🕷️ Spider
 ```bash
