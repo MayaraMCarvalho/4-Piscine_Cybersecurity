@@ -13,7 +13,7 @@ This project is an introduction to Web Scraping and Metadata Analysis, as part o
 * [Overview](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#%EF%B8%8F-overview)
 * [Features](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-features)
 * [Technologies Used](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#%EF%B8%8F-technologies-used)
-* [Installation & Setup](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-installation--setupp)
+* [Installation & Setup](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-installation--setup)
 * [Usage](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-usage)
 * [Author](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-author)
 
