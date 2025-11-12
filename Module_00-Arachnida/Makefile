@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/12 17:11:44 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/12 17:42:43 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,15 +40,15 @@ SCORPION	= $(SRCS)/scorpion.py
 RECURSIVE	= -r
 LEVEL		= -l
 DATA_LEVEL	= 2
-PATH_SAVE	= -p
-VALUE_PATH	= test
+PATH_SAVE	=
+VALUE_PATH	=
 URL			= http://example.com
 
 # --- User Arguments Scorpion ---
-MODIFY		=
+MODIFY		=# modify_metadata
 DELETE		=
 FILES_PATH	= ./data/
-FILES		= $(FILES_PATH)spider_results.json $(FILES_PATH)test_urls.txt
+FILES		= $(FILES_PATH)spider_results.jpeg $(FILES_PATH)test_urls.bmp
 
 # --- Python Configuration ---
 VENV_DIR	= .venv

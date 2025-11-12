@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/12 16:59:51 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/12 17:42:18 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,15 @@
 
 import argparse
 
-from colors import CYAN, BPURPLE, BYELLOW, BGREEN, RESET
+from colors import CYAN, BPURPLE, BYELLOW, BRED, RESET
+
+def valid_extentions(files):
+	valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
+
+	return all(any(file.lower().endswith(ext)
+				for ext in valid_exts)
+				for	file in files)
+
 
 def	 parse_args():
 	parser = argparse.ArgumentParser(description="Scorpion Module - Arachnida")
@@ -34,18 +42,21 @@ def	 parse_args():
 						nargs='+',
 						help= 'Path to the file to extract metadata.')
 
-
 	return parser.parse_args()
 
 def info():
-	print(f"\n{BYELLOW}{'-'*70}{RESET}")
-	print(f"{BPURPLE}{'🦂 Scorpion Module - Arachnida':^70}{RESET}")
-	print(f"\n{CYAN}{'This module extracts, modifies, or deletes metadata from image files.':^70}{RESET}")
-	print(f"{BYELLOW}{'-'*70}{RESET}\n")
+	print(f"\n{BYELLOW}{'-'*90}{RESET}")
+	print(f"{BPURPLE}{'🦂 Scorpion Module - Arachnida':^90}{RESET}")
+	print(f"{CYAN}{'This module extracts, modifies, or deletes metadata from image files.':^90}{RESET}")
+	print(f"{BYELLOW}{'-'*90}{RESET}\n")
 
 def main():
 	info()
 	args = parse_args()
+
+	if not valid_extentions(args.files):
+		return print(f"{BRED}No valid image files provided. Supported "
+			   		 f"extensions are .jpg, .jpeg, .png, .gif, .bmp.{RESET}")
 
 	print(f'Arguments received: \
 		\n m={args.m},\
