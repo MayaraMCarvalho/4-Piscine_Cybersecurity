@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/12 12:05:29 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/12 17:11:44 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,26 @@ BPURPLE		= \033[1;35m
 BCYAN		= \033[1;36m
 BWHITE		= \033[1;37m
 
-NAME		= arachnida
-SPIDER		= spider
-SCORPION	= scorpion
+# --- Project Configuration ---
+SRCS		= ./srcs
 
-DATA_PATH	= ./data/
+NAME		= arachnida
+SPIDER		= $(SRCS)/spider.py
+SCORPION	= $(SRCS)/scorpion.py
+
+# --- User Arguments Spider ---
+RECURSIVE	= -r
+LEVEL		= -l
+DATA_LEVEL	= 2
+PATH_SAVE	= -p
+VALUE_PATH	= test
+URL			= http://example.com
+
+# --- User Arguments Scorpion ---
+MODIFY		=
+DELETE		=
+FILES_PATH	= ./data/
+FILES		= $(FILES_PATH)spider_results.json $(FILES_PATH)test_urls.txt
 
 # --- Python Configuration ---
 VENV_DIR	= .venv
@@ -44,34 +59,40 @@ PIP			= $(VENV_DIR)/bin/pip
 all: 		$(VENV_DIR)
 
 $(VENV_DIR):	requirements.txt
-	@echo "Creating virtual environment in $(VENV_DIR)..."
-	@sudo python3 -m venv $(VENV_DIR) > /dev/null 2>&1
-	@echo "Installing dependencies from requirements.txt..."
-	@$(PIP) install --upgrade pip > /dev/null 2>&1
-	@$(PIP) install -r requirements.txt > /dev/null 2>&1
-	@echo "$(CYAN)$(NAME): $(GREEN)Virtual environment and dependencies installed!$(RESET)"
-
-$(DATA_PATH):
-			@mkdir -p $(DATA_PATH)
+	@echo "$(BBLUE)\nCreating virtual environment in $(VENV_DIR)...$(RESET)"
+	@python3 -m venv $(VENV_DIR) > /dev/null || ( \
+		echo ""; \
+		echo "$(BRED)\n-----------------------------------------------------------------"; \
+		echo "[ERROR] Failed to create the virtual environment.."; \
+		echo "The package 'python3-venv' is probably missing."; \
+		echo "Please run this command and try 'make' again::"; \
+		echo "    sudo apt install python3-venv"; \
+		echo "-----------------------------------------------------------------\n$(RESET)"; \
+		exit 1; \
+	)
+	@echo "$(BPURPLE)Installing dependencies from requirements.txt...\n$(RESET)"
+	@$(PIP) install --upgrade pip > /dev/null
+	@$(PIP) install -r requirements.txt > /dev/null
+	@echo "$(BCYAN)$(NAME): $(BGREEN)Virtual environment and dependencies installed!$(RESET)"
 
 # --- Execution Rules ---
 run_spider:	$(VENV_DIR)
-	@$(PYTHON) $(SPIDER) $(ARGS)
+	clear
+	@$(PYTHON) $(SPIDER) $(RECURSIVE) $(LEVEL) $(DATA_LEVEL) $(PATH_SAVE) $(if $(filter -p,$(PATH_SAVE)), $(VALUE_PATH),) $(URL)
 
 run_scorpion:	$(VENV_DIR)
-	@$(PYTHON) $(SCORPION) $(ARGS)
+	clear
+	@$(PYTHON) $(SCORPION) $(MODIFY) $(DELETE) $(FILES)
 
 # --- Clean Rules ---
 clean:
-	@rm -rf $(DATA_PATH)
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
 	@find . -type f -name "*.pyc" -delete
-	@echo "$(CYAN)$(NAME): $(GREEN)Clean done!$(RESET)"
+	@echo "$(CYAN)$(NAME): $(GREEN)Clean generated files done!$(RESET)"
 
 fclean:		clean
 	@rm -rf $(VENV_DIR)
-	@echo "$(CYAN)$(NAME): $(GREEN)Full clean done!$(RESET)"
-
+	@echo "$(CYAN)$(NAME): $(GREEN)Clean environment done!$(RESET)"
 
 re:			fclean all
 
