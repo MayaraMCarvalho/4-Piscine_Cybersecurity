@@ -1,0 +1,23 @@
+# !/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# This file lists the Python package dependencies for the Arachnida module
+# in the Piscine Cybersecurity program. It ensures that all necessary libraries
+# are installed for the module to function correctly.
+
+import requests
+import argparse
+import BeautifulSoup4
+import Pillow
+
+# List of required packages
+requests>=2.25.1
+argparse>=1.4.0
+beautifulsoup4>=4.9.3
+Pillow>=8.1.0
+
+# To install the dependencies, run:
+# pip install -r requirements.txt
+# Make sure to use a virtual environment to avoid conflicts with other projects.
+
+# End of requirements.txt

@@ -1,0 +1,9 @@
+# Ignora o ambiente virtual
+.venv/
+
+# Ignora caches do Python
+__pycache__/
+*.pyc
+
+# Ignora a pasta de dados baixados
+data/
