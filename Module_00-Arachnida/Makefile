@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/12 17:42:43 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 17:01:27 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,14 +40,20 @@ SCORPION	= $(SRCS)/scorpion.py
 RECURSIVE	= -r
 LEVEL		= -l
 DATA_LEVEL	= 2
-PATH_SAVE	=
-VALUE_PATH	=
-URL			= http://example.com
+PATH_SAVE	= -p
+VALUE_PATH	= ./test/
+URL			= http://books.toscrape.com
 
 # --- User Arguments Scorpion ---
 MODIFY		=# modify_metadata
 DELETE		=
-FILES_PATH	= ./data/
+
+ifeq ($(PATH_SAVE), -p)
+	FILES_PATH  = $(VALUE_PATH)
+else
+	FILES_PATH  = ./data/
+endif
+
 FILES		= $(FILES_PATH)spider_results.jpeg $(FILES_PATH)test_urls.bmp
 
 # --- Python Configuration ---
@@ -73,16 +79,27 @@ $(VENV_DIR):	requirements.txt
 	@echo "$(BPURPLE)Installing dependencies from requirements.txt...\n$(RESET)"
 	@$(PIP) install --upgrade pip > /dev/null
 	@$(PIP) install -r requirements.txt > /dev/null
+	@make --no-print-directory check_packages
 	@echo "$(BCYAN)$(NAME): $(BGREEN)Virtual environment and dependencies installed!$(RESET)"
+
+check_packages: $(VENV_DIR)
+	@echo "$(BBLUE)\nVerificando pacotes instalados no ambiente virtual...$(RESET)"
+	@$(PIP) show requests > /dev/null && echo "$(BGREEN)✓ requests instalado$(RESET)" \
+		|| echo "$(BRED)✗ requests não encontrado$(RESET)"
+	@$(PIP) show beautifulsoup4 > /dev/null && echo "$(BGREEN)✓ beautifulsoup4 instalado$(RESET)" \
+		|| echo "$(BRED)✗ beautifulsoup4 não encontrado$(RESET)"
+	@$(PIP) show Pillow > /dev/null && echo "$(BGREEN)✓ Pillow instalado$(RESET)" \
+		|| echo "$(BRED)✗ Pillow não encontrado$(RESET)"
 
 # --- Execution Rules ---
 run_spider:	$(VENV_DIR)
 	clear
-	@$(PYTHON) $(SPIDER) $(RECURSIVE) $(LEVEL) $(DATA_LEVEL) $(PATH_SAVE) $(if $(filter -p,$(PATH_SAVE)), $(VALUE_PATH),) $(URL)
+	@$(PYTHON) $(SPIDER) $(RECURSIVE) $(LEVEL) $(DATA_LEVEL) $(PATH_SAVE) \
+				$(if $(filter -p,$(PATH_SAVE)), $(VALUE_PATH),) $(URL) || true
 
 run_scorpion:	$(VENV_DIR)
 	clear
-	@$(PYTHON) $(SCORPION) $(MODIFY) $(DELETE) $(FILES)
+	@$(PYTHON) $(SCORPION) $(MODIFY) $(DELETE) $(FILES) || true
 
 # --- Clean Rules ---
 clean:

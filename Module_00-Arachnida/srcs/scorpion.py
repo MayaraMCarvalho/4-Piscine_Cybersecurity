@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/12 17:42:18 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 16:38:11 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,12 @@
 
 import argparse
 
-from colors import CYAN, BPURPLE, BYELLOW, BRED, RESET
+from colors import  CYAN, BRED, BGREEN, BYELLOW, BBLUE, BPURPLE, BCYAN, RESET
+
+def error_quick_exit(message):
+	print(f"{BRED}{message}{RESET}")
+
+	exit(1)
 
 def valid_extentions(files):
 	valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
@@ -55,15 +60,10 @@ def main():
 	args = parse_args()
 
 	if not valid_extentions(args.files):
-		return print(f"{BRED}No valid image files provided. Supported "
-			   		 f"extensions are .jpg, .jpeg, .png, .gif, .bmp.{RESET}")
+		error_quick_exit("No valid image files provided. Supported "
+						"extensions are .jpg, .jpeg, .png, .gif, .bmp.")
 
-	print(f'Arguments received: \
-		\n m={args.m},\
-		\n d={args.d}')
 
-	for i, file in enumerate(args.files, start=1):
-		print(f' file{i}={file}')
 
 if __name__ == "__main__":
 	main()
