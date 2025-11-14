@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/13 17:01:27 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 22:00:25 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,21 +40,23 @@ SCORPION	= $(SRCS)/scorpion.py
 RECURSIVE	= -r
 LEVEL		= -l
 DATA_LEVEL	= 2
-PATH_SAVE	= -p
-VALUE_PATH	= ./test/
+PATH_SAVE	=
+VALUE_PATH	=
 URL			= http://books.toscrape.com
+# URL = jw.org
 
 # --- User Arguments Scorpion ---
 MODIFY		=# modify_metadata
 DELETE		=
 
 ifeq ($(PATH_SAVE), -p)
-	FILES_PATH  = $(VALUE_PATH)
+	FILES_PATH = $(VALUE_PATH)
 else
-	FILES_PATH  = ./data/
+	FILES_PATH = ./data/
 endif
 
 FILES		= $(FILES_PATH)spider_results.jpeg $(FILES_PATH)test_urls.bmp
+# FILES		= $(wildcard $(FILES_PATH)*)
 
 # --- Python Configuration ---
 VENV_DIR	= .venv

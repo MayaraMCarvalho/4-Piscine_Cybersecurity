@@ -131,5 +131,3 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 
 ## 👩🏻 Autora
 [Mayara Carvalho / macarval]
-
-

@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/13 17:10:43 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 21:59:20 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,13 @@ import requests
 
 from bs4 import BeautifulSoup # type: ignore
 from colors import CYAN, BRED, BGREEN, BYELLOW, BBLUE, BPURPLE, BCYAN, RESET
+from urllib import robotparser
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
+VALID_EXTS = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
+USER_AGENT = "macarval_42_Sao_Paulo"
+CACHE = {}
 
 def main():
 	info()
@@ -32,7 +35,8 @@ def main():
 	visited_urls = set()
 	get_images(args.url, args.r, args.l, args.p, visited_urls)
 
-	print(f"\n{BBLUE}Download completed! Images saved to: {BPURPLE}{args.p}{RESET}\n")
+	print(f"\n{BBLUE}Download completed! Images saved to: \
+		{BPURPLE}{args.p}{RESET}\n")
 
 def info():
 	print(f"\n{BYELLOW}{'-'*90}{RESET}")
@@ -46,8 +50,8 @@ def parse_args():
 	parser.add_argument('-r',
 						default=False,
 						action='store_true',
-						help='Command to enable recursively downloads the images '
-						'in a URL received as a parameter.')
+						help='Command to enable recursively downloads the '
+						'images in a URL received as a parameter.')
 
 	parser.add_argument('-l',
 						type=int,
@@ -81,33 +85,48 @@ def validate_args(args):
 		args.url = args.url + '/'
 
 def error_quick_exit(message):
-	print(f"{BRED}{message}{RESET}")
+	print(f"{BRED}{message}{RESET}\n")
 
 	exit(1)
 
 def get_url(url):
 	try:
-		response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+		response = requests.get(url, headers={'User-Agent': USER_AGENT},
+					timeout=10)
 		response.raise_for_status()
-	except requests.exceptions.RequestException as e:
-		error_quick_exit(f"Failed to access the URL: {url}\n\nError: {e}\n")
+		return response
 
-	return response
+	except requests.exceptions.RequestException as e:
+		print(f"{BRED}Failed to access the URL: {url}\n\nError: {e}{RESET}\n")
+		return None
 
 def get_images(page_url, recursive, depth, path, visited_urls):
 	if depth < 1 or page_url in visited_urls:
 		return
 
-	print(f"{BYELLOW}Processando ({BCYAN}Depth {depth}{BYELLOW}): {BGREEN}{page_url}{RESET}")
+	if not is_allowed(page_url):
+		print(f"{BRED}Ignoring (forbidden by robots.txt): {page_url}{RESET}")
+
+	print(f"{BYELLOW}Processando ({BCYAN}Depth {depth}{BYELLOW}): \
+			{BGREEN}{page_url}{RESET}")
+
 	visited_urls.add(page_url)
 	response = get_url(page_url)
+
+	if response is None:
+		return
+
 	list_images = get_list_images(response.text, page_url)
 	download_images(list_images, path)
 
 	if recursive:
 		list_subpages = get_list_subpages(response.text, page_url)
 		for url in list_subpages:
-			get_images(url, recursive, depth - 1, path, visited_urls)
+			if is_allowed(url):
+				get_images(url, recursive, depth - 1, path, visited_urls)
+			else:
+				print(f"{BRED}Ignoring subpage (forbidden by robots.txt): \
+					{url}{RESET}")
 
 def get_list_images(content, url):
 	content = BeautifulSoup(content, 'html.parser')
@@ -115,7 +134,7 @@ def get_list_images(content, url):
 
 	for img in content.find_all('img'):
 		src = img.get('src')
-		if src and any(src.lower().endswith(ext) for ext in valid_exts):
+		if src and any(src.lower().endswith(ext) for ext in VALID_EXTS):
 			images_source.append((urljoin(url, src)))
 
 	return images_source
@@ -131,7 +150,7 @@ def get_list_subpages(content, url):
 
 		if parsed.netloc == urlparse(url).netloc:
 			if not any(parsed.path.endswith(ext)
-				for ext in valid_exts) and not parsed.fragment:
+				for ext in VALID_EXTS) and not parsed.fragment:
 				subpages_source.append(full_url)
 
 	return list(set(subpages_source))
@@ -139,6 +158,7 @@ def get_list_subpages(content, url):
 def download_images(images, path):
 	with ThreadPoolExecutor(max_workers=10) as executor:
 		futures = []
+
 		for img_url in images:
 			futures.append(executor.submit(download_one_image, img_url, path))
 
@@ -147,7 +167,12 @@ def download_images(images, path):
 
 def download_one_image(img_url, path):
 	try:
-		img_data = requests.get(img_url, headers={'User-Agent': 'Mozilla/5.0'})
+		if not is_allowed(img_url):
+			print(f"{BRED}Ignoring image (forbidden by robots.txt): \
+		 			{img_url}{RESET}")
+			return False
+
+		img_data = requests.get(img_url, headers={'User-Agent': USER_AGENT})
 		img_data.raise_for_status()
 		img_name = os.path.basename(img_url.split("?")[0])
 
@@ -157,8 +182,40 @@ def download_one_image(img_url, path):
 		return True
 
 	except requests.exceptions.RequestException as e:
-		print(f"{BRED}Failed to download image: {img_url}\nError: {e}{RESET}")
+		print(f"{BRED}Failed to download image: {img_url}\nError: {e}{RESET}\n")
 		return False
+
+def get_robot(url):
+	parsed_url = urlparse(url)
+	domain = parsed_url.netloc
+
+	if domain in CACHE:
+		return CACHE[domain]
+
+	robots_url = f"{parsed_url.scheme}: //{domain}/robots.txt"
+	print(f"{BCYAN}Buscando {robots_url}{RESET}")
+
+	rp = robotparser.RobotFileParser()
+	rp.set_url(robots_url)
+
+	try:
+		rp.read()
+		CACHE[domain] = rp
+		return rp
+	except Exception as e:
+		print (f"{BRED}Could not read robots.txt from {domain}: {e}{RESET}\n")
+		CACHE[domain] = None
+		return None
+
+def is_allowed(url):
+	try:
+		rp = get_robot(url)
+		if rp:
+			return rp.can_fetch(USER_AGENT, url)
+
+		return True
+	except Exception:
+		return True
 
 if __name__ == "__main__":
 	main()
