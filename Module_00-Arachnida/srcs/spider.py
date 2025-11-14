@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/13 21:59:20 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 22:16:46 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ from urllib import robotparser
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-VALID_EXTS = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
 USER_AGENT = "macarval_42_Sao_Paulo"
-CACHE = {}
+valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
+cache = {}
 
 def main():
 	info()
@@ -134,7 +134,7 @@ def get_list_images(content, url):
 
 	for img in content.find_all('img'):
 		src = img.get('src')
-		if src and any(src.lower().endswith(ext) for ext in VALID_EXTS):
+		if src and any(src.lower().endswith(ext) for ext in valid_exts):
 			images_source.append((urljoin(url, src)))
 
 	return images_source
@@ -150,7 +150,7 @@ def get_list_subpages(content, url):
 
 		if parsed.netloc == urlparse(url).netloc:
 			if not any(parsed.path.endswith(ext)
-				for ext in VALID_EXTS) and not parsed.fragment:
+				for ext in valid_exts) and not parsed.fragment:
 				subpages_source.append(full_url)
 
 	return list(set(subpages_source))
@@ -189,23 +189,32 @@ def get_robot(url):
 	parsed_url = urlparse(url)
 	domain = parsed_url.netloc
 
-	if domain in CACHE:
-		return CACHE[domain]
+	if domain in cache:
+		return cache[domain]
 
 	robots_url = f"{parsed_url.scheme}: //{domain}/robots.txt"
 	print(f"{BCYAN}Buscando {robots_url}{RESET}")
 
 	rp = robotparser.RobotFileParser()
-	rp.set_url(robots_url)
+	response = get_url(robots_url)
 
-	try:
-		rp.read()
-		CACHE[domain] = rp
-		return rp
-	except Exception as e:
-		print (f"{BRED}Could not read robots.txt from {domain}: {e}{RESET}\n")
-		CACHE[domain] = None
+	if response and response.status_code == 200:
+		try:
+			rp.parse(response.text.splitlines())
+			print(f"{BGREEN}robots.txt from {domain} read successfully.{RESET}")
+		except Exception as e:
+			print(f"{BRED}Failed to parse the robots.txt file from \
+		 			{domain}: {e}{RESET}")
+			cache[domain] = None
+			return None
+	else:
+		print (f"{BRED}Could not read robots.txt from {domain} \
+		 	(status: {response.status_code if response else 'N/A'}).{RESET}\n")
+		cache[domain] = None
 		return None
+
+	cache[domain] = rp
+	return rp
 
 def is_allowed(url):
 	try:
