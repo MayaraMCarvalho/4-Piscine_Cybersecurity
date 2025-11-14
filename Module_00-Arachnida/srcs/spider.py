@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/13 22:16:46 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 22:47:56 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ from urllib import robotparser
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-USER_AGENT = "macarval_42_Sao_Paulo"
+USER_AGENT = "Mozilla/5.0"
 valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
 cache = {}
 
@@ -33,7 +33,7 @@ def main():
 	os.makedirs(args.p, exist_ok=True)
 
 	visited_urls = set()
-	get_images(args.url, args.r, args.l, args.p, visited_urls)
+	get_images(args, args.url, args.l, visited_urls)
 
 	print(f"\n{BBLUE}Download completed! Images saved to: \
 		{BPURPLE}{args.p}{RESET}\n")
@@ -56,7 +56,7 @@ def parse_args():
 	parser.add_argument('-l',
 						type=int,
 						default=5,
-						help='IMaximum depth level of the recursive download.')
+						help='Maximum depth level of the recursive download.')
 
 	parser.add_argument('-p',
 						type=str,
@@ -85,7 +85,7 @@ def validate_args(args):
 		args.url = args.url + '/'
 
 def error_quick_exit(message):
-	print(f"{BRED}{message}{RESET}\n")
+	print(f"{BRED}{message}{RESET}")
 
 	exit(1)
 
@@ -97,18 +97,18 @@ def get_url(url):
 		return response
 
 	except requests.exceptions.RequestException as e:
-		print(f"{BRED}Failed to access the URL: {url}\n\nError: {e}{RESET}\n")
+		print(f"{BRED}Failed to access the URL: {url}\nError: {e}{RESET}")
 		return None
 
-def get_images(page_url, recursive, depth, path, visited_urls):
+def get_images(args, page_url, depth, visited_urls):
 	if depth < 1 or page_url in visited_urls:
 		return
 
-	if not is_allowed(page_url):
-		print(f"{BRED}Ignoring (forbidden by robots.txt): {page_url}{RESET}")
+	if not args.r:
+		depth = 1
 
-	print(f"{BYELLOW}Processando ({BCYAN}Depth {depth}{BYELLOW}): \
-			{BGREEN}{page_url}{RESET}")
+	print(f"{BYELLOW}Processando ({BCYAN}Depth {args.l - depth + 1}"
+			f"{BYELLOW}): {BGREEN}{page_url}{RESET}")
 
 	visited_urls.add(page_url)
 	response = get_url(page_url)
@@ -117,16 +117,12 @@ def get_images(page_url, recursive, depth, path, visited_urls):
 		return
 
 	list_images = get_list_images(response.text, page_url)
-	download_images(list_images, path)
+	download_images(list_images, args.p)
 
-	if recursive:
+	if args.r:
 		list_subpages = get_list_subpages(response.text, page_url)
 		for url in list_subpages:
-			if is_allowed(url):
-				get_images(url, recursive, depth - 1, path, visited_urls)
-			else:
-				print(f"{BRED}Ignoring subpage (forbidden by robots.txt): \
-					{url}{RESET}")
+			get_images(args, url, depth - 1, visited_urls)
 
 def get_list_images(content, url):
 	content = BeautifulSoup(content, 'html.parser')
@@ -167,11 +163,6 @@ def download_images(images, path):
 
 def download_one_image(img_url, path):
 	try:
-		if not is_allowed(img_url):
-			print(f"{BRED}Ignoring image (forbidden by robots.txt): \
-		 			{img_url}{RESET}")
-			return False
-
 		img_data = requests.get(img_url, headers={'User-Agent': USER_AGENT})
 		img_data.raise_for_status()
 		img_name = os.path.basename(img_url.split("?")[0])
@@ -182,49 +173,8 @@ def download_one_image(img_url, path):
 		return True
 
 	except requests.exceptions.RequestException as e:
-		print(f"{BRED}Failed to download image: {img_url}\nError: {e}{RESET}\n")
+		print(f"{BRED}Failed to download image: {img_url}\nError: {e}{RESET}")
 		return False
-
-def get_robot(url):
-	parsed_url = urlparse(url)
-	domain = parsed_url.netloc
-
-	if domain in cache:
-		return cache[domain]
-
-	robots_url = f"{parsed_url.scheme}: //{domain}/robots.txt"
-	print(f"{BCYAN}Buscando {robots_url}{RESET}")
-
-	rp = robotparser.RobotFileParser()
-	response = get_url(robots_url)
-
-	if response and response.status_code == 200:
-		try:
-			rp.parse(response.text.splitlines())
-			print(f"{BGREEN}robots.txt from {domain} read successfully.{RESET}")
-		except Exception as e:
-			print(f"{BRED}Failed to parse the robots.txt file from \
-		 			{domain}: {e}{RESET}")
-			cache[domain] = None
-			return None
-	else:
-		print (f"{BRED}Could not read robots.txt from {domain} \
-		 	(status: {response.status_code if response else 'N/A'}).{RESET}\n")
-		cache[domain] = None
-		return None
-
-	cache[domain] = rp
-	return rp
-
-def is_allowed(url):
-	try:
-		rp = get_robot(url)
-		if rp:
-			return rp.can_fetch(USER_AGENT, url)
-
-		return True
-	except Exception:
-		return True
 
 if __name__ == "__main__":
 	main()

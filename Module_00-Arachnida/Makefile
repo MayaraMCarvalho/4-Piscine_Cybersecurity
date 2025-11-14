@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/13 22:00:25 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/13 22:49:02 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,11 +39,10 @@ SCORPION	= $(SRCS)/scorpion.py
 # --- User Arguments Spider ---
 RECURSIVE	= -r
 LEVEL		= -l
-DATA_LEVEL	= 2
-PATH_SAVE	=
-VALUE_PATH	=
-URL			= http://books.toscrape.com
-# URL = jw.org
+DATA_LEVEL	= 1
+PATH_SAVE	= -p
+VALUE_PATH	= test
+URL			= https://webscraper.io/test-sites
 
 # --- User Arguments Scorpion ---
 MODIFY		=# modify_metadata
