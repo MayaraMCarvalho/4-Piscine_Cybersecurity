@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/18 12:09:45 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/18 12:14:11 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -149,7 +149,7 @@ git:
 	read msg; \
 	echo -n "\n"; \
 	echo "$(BLUE)"; \
-	git commit -m "[$(NAME) - ex$$ex] $$type: $$msg"; \
+	git commit -m "[$(NAME) - ex $$ex] $$type: $$msg"; \
 	git push
 
 .PHONY:		all re clean fclean git run_spider run_scorpion
