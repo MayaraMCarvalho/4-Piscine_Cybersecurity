@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/13 22:47:56 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/18 09:33:40 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,9 @@ def main():
 def info():
 	print(f"\n{BYELLOW}{'-'*90}{RESET}")
 	print(f"{BPURPLE}{'🕷️ Spider Module - Arachnida':^90}{RESET}")
-	print(f"\n{CYAN}{'This module downloads images from a given URL.':^90}{RESET}")
+	print(f"\n{CYAN}{'This module downloads images from a given URL.':^90} \
+		{RESET}")
+
 	print(f"{BYELLOW}{'-'*90}{RESET}\n")
 
 def parse_args():

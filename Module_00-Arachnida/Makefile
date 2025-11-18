@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/14 00:31:57 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/18 12:09:45 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,10 @@ VALUE_PATH	= test/
 URL			= https://webscraper.io/test-sites
 
 # --- User Arguments Scorpion ---
-MODIFY		= # modify_metadata
+MODIFY		=
+# DATA_MOD	= Orientation 25
+# DATA_MOD	= FNumber f/2.8
+# DATA_MOD	= Software "Editado pela Mayara"
 DELETE		=
 
 ifeq ($(PATH_SAVE), -p)
@@ -54,8 +57,8 @@ else
 	FILES_PATH = ./data/
 endif
 
-FILES		= $(wildcard $(FILES_PATH)*)
-# FILES = test/fortesto.png
+# FILES		= $(wildcard $(FILES_PATH)*)
+FILES = test/fortesto.png
 
 # --- Python Configuration ---
 VENV_DIR	= .venv
@@ -100,7 +103,7 @@ run_spider:	$(VENV_DIR)
 
 run_scorpion:	$(VENV_DIR)
 	clear
-	@$(PYTHON) $(SCORPION) $(MODIFY) $(DELETE) $(FILES) || true
+	@$(PYTHON) $(SCORPION) $(MODIFY) $(DATA_MOD) $(DELETE) $(FILES) || true
 
 # --- Clean Rules ---
 clean:
