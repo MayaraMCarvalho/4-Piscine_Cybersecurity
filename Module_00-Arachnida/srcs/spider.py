@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/18 09:33:40 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/18 15:23:25 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,16 +15,17 @@
 import os
 import argparse
 import requests
+import warnings
 
 from bs4 import BeautifulSoup # type: ignore
 from colors import CYAN, BRED, BGREEN, BYELLOW, BBLUE, BPURPLE, BCYAN, RESET
-from urllib import robotparser
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from bs4 import XMLParsedAsHTMLWarning # type: ignore
+
 
 USER_AGENT = "Mozilla/5.0"
 valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
-cache = {}
 
 def main():
 	info()
@@ -92,6 +93,9 @@ def error_quick_exit(message):
 	exit(1)
 
 def get_url(url):
+	"""
+	Fetch the content of the given URL.
+	"""
 	try:
 		response = requests.get(url, headers={'User-Agent': USER_AGENT},
 					timeout=10)
@@ -103,11 +107,11 @@ def get_url(url):
 		return None
 
 def get_images(args, page_url, depth, visited_urls):
+	"""
+	Recursively fetch images from the given URL up to the specified depth.
+	"""
 	if depth < 1 or page_url in visited_urls:
 		return
-
-	if not args.r:
-		depth = 1
 
 	print(f"{BYELLOW}Processando ({BCYAN}Depth {args.l - depth + 1}"
 			f"{BYELLOW}): {BGREEN}{page_url}{RESET}")
@@ -127,6 +131,10 @@ def get_images(args, page_url, depth, visited_urls):
 			get_images(args, url, depth - 1, visited_urls)
 
 def get_list_images(content, url):
+	"""
+	Extract image URLs from the page content.
+	"""
+	warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 	content = BeautifulSoup(content, 'html.parser')
 	images_source = []
 
@@ -138,6 +146,9 @@ def get_list_images(content, url):
 	return images_source
 
 def get_list_subpages(content, url):
+	"""
+	Extract subpage URLs from the page content.
+	"""
 	content = BeautifulSoup(content, 'html.parser')
 	subpages_source = []
 
@@ -154,6 +165,9 @@ def get_list_subpages(content, url):
 	return list(set(subpages_source))
 
 def download_images(images, path):
+	"""
+	Download images concurrently to the specified path.
+	"""
 	with ThreadPoolExecutor(max_workers=10) as executor:
 		futures = []
 
@@ -164,6 +178,9 @@ def download_images(images, path):
 			future.result()
 
 def download_one_image(img_url, path):
+	"""
+	Download a single image from the given URL to the specified path.
+	"""
 	try:
 		img_data = requests.get(img_url, headers={'User-Agent': USER_AGENT})
 		img_data.raise_for_status()

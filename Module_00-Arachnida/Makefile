@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/18 12:14:11 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/18 15:34:03 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,13 +43,14 @@ DATA_LEVEL	= 2
 PATH_SAVE	= -p
 VALUE_PATH	= test/
 URL			= https://webscraper.io/test-sites
+URL			= https://pt.wikipedia.org/wiki/
 
 # --- User Arguments Scorpion ---
-MODIFY		=
-# DATA_MOD	= Orientation 25
+# MODIFY		= -m
+# DATA_MOD	= Orientation 42
 # DATA_MOD	= FNumber f/2.8
 # DATA_MOD	= Software "Editado pela Mayara"
-DELETE		=
+# DELETE		= -d
 
 ifeq ($(PATH_SAVE), -p)
 	FILES_PATH = $(VALUE_PATH)
@@ -57,8 +58,7 @@ else
 	FILES_PATH = ./data/
 endif
 
-# FILES		= $(wildcard $(FILES_PATH)*)
-FILES = test/fortesto.png
+FILES		= $(wildcard $(FILES_PATH)*)
 
 # --- Python Configuration ---
 VENV_DIR	= .venv
@@ -99,11 +99,11 @@ check_packages: $(VENV_DIR)
 run_spider:	$(VENV_DIR)
 	clear
 	@$(PYTHON) $(SPIDER) $(RECURSIVE) $(LEVEL) $(DATA_LEVEL) $(PATH_SAVE) \
-				$(if $(filter -p,$(PATH_SAVE)), $(VALUE_PATH),) $(URL) || true
+				$(if $(filter -p,$(PATH_SAVE)), $(VALUE_PATH),) $(URL)
 
 run_scorpion:	$(VENV_DIR)
 	clear
-	@$(PYTHON) $(SCORPION) $(MODIFY) $(DATA_MOD) $(DELETE) $(FILES) || true
+	@$(PYTHON) $(SCORPION) $(MODIFY) $(DATA_MOD) $(DELETE) $(FILES)
 
 # --- Clean Rules ---
 clean:

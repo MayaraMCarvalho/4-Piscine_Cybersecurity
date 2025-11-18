@@ -44,6 +44,8 @@ The `scorpion` is a metadata (EXIF) analyzer for image files. It reads the hidde
 * Analyzes one or more image files provided as arguments.
 * Displays EXIF and other basic metadata.
 * Supports the same extensions as `spider`.
+* **Modify Metadata:** Allows changing values of specific tags (option `-m`).
+* **Delete Metadata:** Allows removing all EXIF data from a file (option `-d`).
 
 ---
 
@@ -92,6 +94,39 @@ The `scorpion` is a metadata (EXIF) analyzer for image files. It reads the hidde
     chmod +x scorpion
     # Alternatively, rename your files to spider.py and scorpion.py and run with 'python3 spider.py ...'
     ```
+
+---
+
+## 🤖 Makefile Automation
+
+This project includes a `Makefile` to simplify environment setup, dependency installation, and quick testing.
+
+### Available Commands
+
+* **Automatic Setup:**
+    ```bash
+    make
+    ```
+    Creates the virtual environment (`.venv`), installs all dependencies from `requirements.txt`, and verifies package installation.
+
+* **Run Spider (Default):**
+    ```bash
+    make run_spider
+    ```
+    Runs `spider` using the default configuration and URL defined in the Makefile variables. Useful for quick testing.
+
+* **Run Scorpion (Default):**
+    ```bash
+    make run_scorpion
+    ```
+    Runs `scorpion` on the files defined in the Makefile.
+
+* **Cleaning:**
+    ```bash
+    make clean    # Removes cache files (__pycache__)
+    make fclean   # Removes cache, downloaded files, and the virtual environment (.venv)
+    make re       # Reinstalls everything from scratch (fclean + all)
+    ```
 ---
 
 ## 🔧 Usage
@@ -116,14 +151,26 @@ The `scorpion` is a metadata (EXIF) analyzer for image files. It reads the hidde
 ### 🦂 Scorpion
 
 ```bash
-./scorpion FILE1 [FILE2 ...]
+./scorpion [-m TAG VALUE | -d] FILE1 [FILE2 ...]
 ```
 
 #### 📋 Example:
 
 ```bash
-# Analyze the metadata of two images
+# 1. Analyze the metadata of two images
 ./scorpion ./data/image1.jpg ./data/image2.png
+```
+
+```bash
+# 2. Delete all metadata from an image
+./scorpion -d ./data/image1.jpg
+```
+
+```bash
+# 3. Modify a specific metadata tag
+# Note: TAG name must be exact (e.g. 'Orientation', 'Software') and VALUE type must match (int, float or str).
+./scorpion -m Orientation 1 ./data/image1.jpg
+./scorpion -m Software "My Custom Editor" ./data/image2.png
 ```
 
 ---

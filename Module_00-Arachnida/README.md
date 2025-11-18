@@ -44,6 +44,8 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 * Analisa um ou mais arquivos de imagem fornecidos como argumentos.
 * Exibe dados EXIF e outros metadados básicos.
 * Compatível com as mesmas extensões que o `spider`.
+* **Modificar Metadados:** Permite alterar valores de tags específicas (opção `-m`).
+* **Deletar Metadados:** Permite remover todos os dados EXIF de um arquivo (opção `-d`).
 
 ---
 
@@ -95,6 +97,39 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 
 ---
 
+## 🤖 Automação com Makefile
+
+Este projeto inclui um `Makefile` para simplificar a configuração do ambiente, instalação de dependências e execução de testes rápidos.
+
+### Comandos Disponíveis
+
+* **Setup Automático:**
+    ```bash
+    make
+    ```
+    Cria o ambiente virtual (`.venv`), instala todas as dependências do `requirements.txt` e verifica se os pacotes estão corretos.
+
+* **Rodar o Spider (Padrão):**
+    ```bash
+    make run_spider
+    ```
+    Executa o `spider` com as configurações e URL definidas nas variáveis do Makefile. Útil para testes rápidos.
+
+* **Rodar o Scorpion (Padrão):**
+    ```bash
+    make run_scorpion
+    ```
+    Executa o `scorpion` nos arquivos definidos no Makefile.
+
+* **Limpeza:**
+    ```bash
+    make clean    # Remove arquivos de cache (__pycache__)
+    make fclean   # Remove cache, arquivos baixados e o ambiente virtual (.venv)
+    make re       # Reinstala tudo do zero (fclean + all)
+    ```
+
+---
+
 ## 🔧 Modo de Uso
 
 ### 🕷️ Spider
@@ -117,14 +152,26 @@ O `scorpion` é um analisador de metadados (EXIF) para arquivos de imagem. Ele l
 ### 🦂 Scorpion
 
 ```bash
-./scorpion ARQUIVO1 [ARQUIVO2 ...]
+./scorpion [-m TAG VALOR | -d] ARQUIVO1 [ARQUIVO2 ...]
 ```
 
 #### 📋 Exemplo:
 
 ```bash
-# Analisar os metadados de duas imagens
+# 1. Analisar os metadados de duas imagens
 ./scorpion ./data/imagem1.jpg ./data/imagem2.png
+```
+
+```bash
+# 2. Deletar todos os metadados de uma imagem
+./scorpion -d ./data/imagem1.jpg
+```
+
+```bash
+# 3. Modificar uma tag de metadados específica
+# Nota: O nome da TAG deve ser exato (ex: 'Orientation', 'Software') e o tipo do VALOR deve corresponder (int ou str).
+./scorpion -m Orientation 1 ./data/imagem1.jpg
+./scorpion -m Software "Meu Editor Personalizado" ./data/imagem2.png
 ```
 
 ---
