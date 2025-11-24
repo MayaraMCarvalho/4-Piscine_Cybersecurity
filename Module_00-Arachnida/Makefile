@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/18 15:34:03 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/24 14:27:35 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,12 +43,9 @@ DATA_LEVEL	= 2
 PATH_SAVE	= -p
 VALUE_PATH	= test/
 URL			= https://webscraper.io/test-sites
-URL			= https://pt.wikipedia.org/wiki/
 
 # --- User Arguments Scorpion ---
 # MODIFY		= -m
-# DATA_MOD	= Orientation 42
-# DATA_MOD	= FNumber f/2.8
 # DATA_MOD	= Software "Editado pela Mayara"
 # DELETE		= -d
 
