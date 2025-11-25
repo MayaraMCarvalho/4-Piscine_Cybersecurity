@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/12 12:31:36 by macarval          #+#    #+#              #
-#    Updated: 2025/11/18 15:23:25 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/25 12:08:31 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ from colors import CYAN, BRED, BGREEN, BYELLOW, BBLUE, BPURPLE, BCYAN, RESET
 from urllib.parse import urljoin, urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import XMLParsedAsHTMLWarning # type: ignore
-
 
 USER_AGENT = "Mozilla/5.0"
 valid_exts = {".jpg", ".jpeg", ".png", ".gif", ".bmp"}
