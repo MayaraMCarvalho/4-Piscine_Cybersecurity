@@ -1,0 +1,12 @@
+# This file lists the Python package dependencies for the ft_otp module
+# in the Piscine Cybersecurity program. It ensures that all necessary libraries
+# are installed for the module to function correctly.
+
+# List of required packages
+colorama>=0.4.4
+
+# To install the dependencies, run:
+# pip install -r requirements.txt
+# Make sure to use a virtual environment to avoid conflicts with other projects.
+
+# End of requirements.txt
