@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/27 23:26:08 by macarval         ###   ########.fr        #
+#    Updated: 2025/11/28 10:06:13 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRCS		= ft_otp.py
 
 # --- User Arguments ---
 ARG_KEY		= -g
-KEY			= ""
+FILE_KEY	= key.txt
 # KEY_FLAG	= -k
 
 # --- Python Configuration ---
@@ -44,7 +44,7 @@ PYTHON		= $(VENV_DIR)/bin/python3
 PIP			= $(VENV_DIR)/bin/pip
 
 # --- Rules ---
-all: 		$(VENV_DIR) exec
+all:		$(VENV_DIR) exec
 
 $(VENV_DIR):	requirements.txt
 	clear
@@ -78,8 +78,11 @@ exec:
 	@chmod +x $(NAME)
 	@echo "$(BCYAN)$(NAME): $(BGREEN)Executável $(NAME) criado!$(RESET)\n"
 
-run:	$(VENV_DIR) exec
-	@./$(NAME) $(ARG_KEY) $(KEY) $(KEY_FLAG)
+screen:
+	clear
+
+run:	screen $(VENV_DIR) exec
+	@./$(NAME) $(ARG_KEY) $(FILE_KEY) $(KEY_FLAG)
 
 # --- Clean Rules ---
 clean:
@@ -128,4 +131,4 @@ git:
 	git commit -m "[$(NAME) - ex $$ex] $$type: $$msg"; \
 	git push
 
-.PHONY:		all re clean fclean git run exec check_packages
+.PHONY:		all re clean fclean git run exec check_packages screen
