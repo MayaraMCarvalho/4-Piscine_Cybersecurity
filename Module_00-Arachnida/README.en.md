@@ -10,12 +10,12 @@ This project is an introduction to Web Scraping and Metadata Analysis, as part o
 
 ## 📜 Table of Contents
 
-* [Overview](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#%EF%B8%8F-overview)
-* [Features](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-features)
-* [Technologies Used](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#%EF%B8%8F-technologies-used)
-* [Installation & Setup](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-installation--setup)
-* [Usage](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-usage)
-* [Author](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/blob/master/Module_00-Arachnida/Readme.en.md#-author)
+* [Overview](#%EF%B8%8F-overview)
+* [Features](#-features)
+* [Technologies Used](#%EF%B8%8F-technologies-used)
+* [Installation & Setup](#-installation--setup)
+* [Usage](#-usage)
+* [Author](#-author)
 
 ---
 
@@ -176,4 +176,8 @@ This project includes a `Makefile` to simplify environment setup, dependency ins
 ---
 
 ## 👩🏻 Author
-[Mayara Carvalho / macarval]
+**Mayara Carvalho**
+<br>
+[:octocat: @MayaraMCarvalho](https://github.com/MayaraMCarvalho) | 42 Login: `macarval`
+
+---

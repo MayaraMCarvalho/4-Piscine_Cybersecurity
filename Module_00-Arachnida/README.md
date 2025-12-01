@@ -10,12 +10,12 @@ Este projeto é uma introdução ao Web Scraping e à Análise de Metadados, com
 
 ## 📜 Índice
 
-* [Visão Geral](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#%EF%B8%8F-vis%C3%A3o-gerall)
-* [Funcionalidades](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-funcionalidades)
-* [Tecnologias Utilizadas](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#%EF%B8%8F-tecnologias-utilizadas)
-* [Instalação e Setup](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-instala%C3%A7%C3%A3o-e-setup)
-* [Modo de Uso](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-modo-de-uso)
-* [Autor](https://github.com/MayaraMCarvalho/4-Piscine_Cybersecurity/tree/master/Module_00-Arachnida#-autora)
+* [Visão Geral](#%EF%B8%8F-vis%C3%A3o-gerall)
+* [Funcionalidades](#-funcionalidades)
+* [Tecnologias Utilizadas](#%EF%B8%8F-tecnologias-utilizadas)
+* [Instalação e Setup](#-instala%C3%A7%C3%A3o-e-setup)
+* [Modo de Uso](#-modo-de-uso)
+* [Autor](#-autora)
 
 ---
 
@@ -177,4 +177,8 @@ Este projeto inclui um `Makefile` para simplificar a configuração do ambiente,
 ---
 
 ## 👩🏻 Autora
-[Mayara Carvalho / macarval]
+**Mayara Carvalho**
+<br>
+[:octocat: @MayaraMCarvalho](https://github.com/MayaraMCarvalho) | 42 Login: `macarval`
+
+---
