@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/11/28 10:06:13 by macarval         ###   ########.fr        #
+#    Updated: 2025/12/08 01:39:33 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,8 @@ NAME		= ft_otp
 SRCS		= ft_otp.py
 
 # --- User Arguments ---
-ARG_KEY		= -g
-FILE_KEY	= key.txt
+# ARG_KEY		= -g
+# FILE_KEY	= key.txt
 # KEY_FLAG	= -k
 
 # --- Python Configuration ---
@@ -82,7 +82,7 @@ screen:
 	clear
 
 run:	screen $(VENV_DIR) exec
-	@./$(NAME) $(ARG_KEY) $(FILE_KEY) $(KEY_FLAG)
+	@./$(NAME) $(ARG_KEY) $(FILE_KEY) $(KEY_FLAG) 2>/dev/null || true
 
 # --- Clean Rules ---
 clean:
@@ -91,7 +91,7 @@ clean:
 	@echo "$(CYAN)$(NAME): $(GREEN)Clean generated files done!$(RESET)"
 
 fclean:		clean
-	@rm -rf $(VENV_DIR)
+	@rm -rf $(VENV_DIR) $(NAME)
 	@echo "$(CYAN)$(NAME): $(GREEN)Clean environment done!$(RESET)"
 
 re:			fclean all

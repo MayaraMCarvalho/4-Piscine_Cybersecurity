@@ -1,2 +1,0 @@
-#!/bin/sh
-.venv/bin/python3 ft_otp.py "$@"
