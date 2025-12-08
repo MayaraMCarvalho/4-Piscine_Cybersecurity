@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/12/08 01:39:33 by macarval         ###   ########.fr        #
+#    Updated: 2025/12/08 01:40:54 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,7 +128,7 @@ git:
 	read msg; \
 	echo -n "\n"; \
 	echo "$(BLUE)"; \
-	git commit -m "[$(NAME) - ex $$ex] $$type: $$msg"; \
+	git commit -m "($(NAME) - ex $$ex) [$$type]: $$msg"; \
 	git push
 
 .PHONY:		all re clean fclean git run exec check_packages screen
