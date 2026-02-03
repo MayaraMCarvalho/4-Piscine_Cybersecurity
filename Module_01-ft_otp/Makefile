@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2025/12/08 01:40:54 by macarval         ###   ########.fr        #
+#    Updated: 2026/02/03 15:05:24 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,12 +31,13 @@ BWHITE		= \033[1;37m
 
 # --- Project Configuration ---
 NAME		= ft_otp
-SRCS		= ft_otp.py
+FILE		= ft_otp.py
 
 # --- User Arguments ---
-# ARG_KEY		= -g
-# FILE_KEY	= key.txt
+ARG_FLAG	= -g
+ARG_FILE	= key.hex
 # KEY_FLAG	= -k
+# KEY_FILE	= ft_otp.key
 
 # --- Python Configuration ---
 VENV_DIR	= .venv
@@ -74,7 +75,7 @@ check_packages:
 exec:
 	@rm -f $(NAME)
 	@echo '#!/bin/sh' > $(NAME)
-	@echo '$(PYTHON) $(SRCS) "$$@"' >> $(NAME)
+	@echo '$(PYTHON) $(FILE) "$$@"' >> $(NAME)
 	@chmod +x $(NAME)
 	@echo "$(BCYAN)$(NAME): $(BGREEN)Executável $(NAME) criado!$(RESET)\n"
 
@@ -82,7 +83,7 @@ screen:
 	clear
 
 run:	screen $(VENV_DIR) exec
-	@./$(NAME) $(ARG_KEY) $(FILE_KEY) $(KEY_FLAG) 2>/dev/null || true
+	@./$(NAME) $(ARG_FLAG) $(ARG_FILE) $(KEY_FLAG) $(KEY_FILE) || true
 
 # --- Clean Rules ---
 clean:
@@ -128,7 +129,7 @@ git:
 	read msg; \
 	echo -n "\n"; \
 	echo "$(BLUE)"; \
-	git commit -m "($(NAME) - ex $$ex) [$$type]: $$msg"; \
+	git commit -m "($(NAME) - ex$$ex) [$$type]: $$msg"; \
 	git push
 
 .PHONY:		all re clean fclean git run exec check_packages screen
