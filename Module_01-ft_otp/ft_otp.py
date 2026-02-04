@@ -124,7 +124,7 @@ def make_qr(key):
 	key_bytes = bytes.fromhex(key)
 	key_base32 = base64.b32encode(key_bytes).decode('utf-8').replace('=', '')
 
-	otp_uri = f"otpauth://totp/ft_otp?secret={key_base32}&issuer=ft_otp"
+	otp_uri = f"otpauth://totp/ft_otp:macarval?secret={key_base32}&issuer=ft_otp"
 	qr = qrcode.QRCode(version=1, box_size=10, border=5)
 	qr.add_data(otp_uri)
 	qr.make(fit=True)
