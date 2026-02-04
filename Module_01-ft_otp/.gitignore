@@ -8,6 +8,13 @@ env/
 .env
 ft_otp.key
 key.hex
+*.png
+
+*.bin
+*.out
+*.o
+*.so
+*.a
 
 
 .DS_Store

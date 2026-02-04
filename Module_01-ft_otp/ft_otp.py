@@ -13,11 +13,13 @@
 # **************************************************************************** #
 
 import argparse
+import base64
 import string
 import os
 import time
 import hmac
 import hashlib
+import qrcode # type: ignore
 
 from colorama import Fore, Style
 from cryptography.fernet import Fernet
@@ -31,6 +33,9 @@ def main():
 		if args.g:
 			content = read_file(args.g)
 			validate_key(content)
+
+			make_qr(content)
+			print(f"{Fore.GREEN}{Style.BRIGHT}QR code saved as ft_otp_qr.png!{Style.RESET_ALL}")
 
 			store_key(content)
 			print(f"{Fore.GREEN}{Style.BRIGHT}Key was successfully saved in ft_otp.key!{Style.RESET_ALL}\n")
@@ -110,14 +115,22 @@ def validate_key(key):
 	if not all(c in string.hexdigits for c in key):
 		raise ValueError("key must contain only hexadecimal characters (0-9, a-f).")
 
-def error_quick_exit(message):
+def make_qr(key):
 	'''
-	Print an error message and exit the program.
+	Generate a QR code for the provided key.
 	Args:
-		message (str): The error message to display.
+		key (str): The key to encode in the QR code.
 	'''
-	print(f"{Fore.RED}{Style.BRIGHT}ft_otp: error: {message}\n{Fore.RESET}")
-	exit(1)
+	key_bytes = bytes.fromhex(key)
+	key_base32 = base64.b32encode(key_bytes).decode('utf-8').replace('=', '')
+
+	otp_uri = f"otpauth://totp/ft_otp?secret={key_base32}&issuer=ft_otp"
+	qr = qrcode.QRCode(version=1, box_size=10, border=5)
+	qr.add_data(otp_uri)
+	qr.make(fit=True)
+
+	img = qr.make_image(fill='black', back_color='white')
+	img.save("ft_otp_qr.png")
 
 def store_key(key):
 	'''
@@ -157,12 +170,12 @@ def generate_otp(key):
 		str: The generated OTP.
 	'''
 	key = decrypt_key(key)
-	key = bytes.fromhex(key)
+	key_bytes = bytes.fromhex(key)
 
 	now = time.time() // 30
 	time_bytes = int(now).to_bytes(8, byteorder='big')
 
-	hash = hmac.new(key, time_bytes, hashlib.sha1).digest()
+	hash = hmac.new(key_bytes, time_bytes, hashlib.sha1).digest()
 	offset = hash[-1] & 0x0F
 	binary = hash[offset:offset + 4]
 	number = int.from_bytes(binary, byteorder='big') & 0x7FFFFFFF
@@ -192,6 +205,15 @@ def decrypt_key(content):
 		error_quick_exit("invalid token. Unable to decrypt the key.")
 
 	return key
+
+def error_quick_exit(message):
+	'''
+	Print an error message and exit the program.
+	Args:
+		message (str): The error message to display.
+	'''
+	print(f"{Fore.RED}{Style.BRIGHT}ft_otp: error: {message}\n{Fore.RESET}")
+	exit(1)
 
 if __name__ == "__main__":
 	main()
