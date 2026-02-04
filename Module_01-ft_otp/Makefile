@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2026/02/04 14:14:28 by macarval         ###   ########.fr        #
+#    Updated: 2026/02/04 17:45:30 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,6 +88,9 @@ run_key:	screen $(VENV_DIR) exec
 run_otp:	screen $(VENV_DIR) exec
 	@./$(NAME) $(KEY_FLAG) $(KEY_FILE) || true
 
+tests:
+	bash ./tests.sh
+
 # --- Clean Rules ---
 clean:
 	@find . -type d -name "__pycache__" -exec rm -rf {} +
@@ -95,7 +98,7 @@ clean:
 	@echo "$(CYAN)$(NAME): $(GREEN)Clean generated files done!$(RESET)"
 
 fclean:		clean
-	@rm -rf $(VENV_DIR) $(NAME)
+	@rm -rf $(VENV_DIR) $(NAME) *.png *.key *.hex
 	@echo "$(CYAN)$(NAME): $(GREEN)Clean environment done!$(RESET)"
 
 re:			fclean all
