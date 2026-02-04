@@ -27,13 +27,21 @@ def main():
 	info()
 	args = parser_args()
 
-	if args.g:
-		args.key = read_file(args.g)
-		validate_key(args.key)
-		store_key(args.key)
-	elif args.k:
-		args.key = read_file(args.k)
-		generate_otp(args.key)
+	try:
+		if args.g:
+			content = read_file(args.g)
+			validate_key(content)
+
+			store_key(content)
+			print(f"{Fore.GREEN}{Style.BRIGHT}Key was successfully saved in ft_otp.key!{Style.RESET_ALL}\n")
+
+		elif args.k:
+			content = read_file(args.k)
+			otp_code = generate_otp(content)
+			print(otp_code)
+
+	except Exception as e:
+		error_quick_exit(str(e))
 
 def info():
 	print(f"{Fore.YELLOW}{'-'*90}{Style.RESET_ALL}")
@@ -94,13 +102,13 @@ def validate_key(key):
 		key (str): The key to validate.
 	'''
 	if len(key) < 64:
-		error_quick_exit("key must be at least 64 hexadecimal characters.")
+		raise ValueError("key must be at least 64 hexadecimal characters.")
 
 	if len(key) % 2 != 0:
-		error_quick_exit("key must have an even number of characters.")
+		raise ValueError("key must have an even number of characters.")
 
 	if not all(c in string.hexdigits for c in key):
-		error_quick_exit("key must contain only hexadecimal characters (0-9, a-f).")
+		raise ValueError("key must contain only hexadecimal characters (0-9, a-f).")
 
 def error_quick_exit(message):
 	'''
@@ -116,6 +124,8 @@ def store_key(key):
 	Store the provided key into a secure file.
 	Args:
 		key (str): The key to store.
+	Returns:
+		bool: True if the key was stored successfully.
 	'''
 	crypt = save_fernet_key()
 
@@ -125,8 +135,6 @@ def store_key(key):
 	fd = os.open("ft_otp.key", os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
 	with os.fdopen(fd, 'w', encoding="utf-8") as f:
 		f.write(token.decode('utf-8'))
-
-	print(f"{Fore.GREEN}{Style.BRIGHT}Key was successfully saved in ft_otp.key!{Style.RESET_ALL}\n")
 
 def save_fernet_key():
 	'''
@@ -145,6 +153,8 @@ def generate_otp(key):
 	Generate a one-time password using the provided key file.
 	Args:
 		key (str): The key used for OTP generation.
+	Returns:
+		str: The generated OTP.
 	'''
 	key = decrypt_key(key)
 	key = bytes.fromhex(key)
@@ -159,7 +169,7 @@ def generate_otp(key):
 	otp = number % 1000000
 	otp = f"{otp:06d}"
 
-	print(otp)
+	return otp
 
 def decrypt_key(content):
 	'''
