@@ -4,6 +4,8 @@
 
 # List of required packages
 colorama>=0.4.4
+cryptography>=3.4.7
+python-dotenv>=0.19.2
 
 # To install the dependencies, run:
 # pip install -r requirements.txt

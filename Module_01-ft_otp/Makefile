@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2026/02/03 15:05:24 by macarval         ###   ########.fr        #
+#    Updated: 2026/02/04 14:14:28 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,8 +36,8 @@ FILE		= ft_otp.py
 # --- User Arguments ---
 ARG_FLAG	= -g
 ARG_FILE	= key.hex
-# KEY_FLAG	= -k
-# KEY_FILE	= ft_otp.key
+KEY_FLAG	= -k
+KEY_FILE	= ft_otp.key
 
 # --- Python Configuration ---
 VENV_DIR	= .venv
@@ -82,8 +82,11 @@ exec:
 screen:
 	clear
 
-run:	screen $(VENV_DIR) exec
-	@./$(NAME) $(ARG_FLAG) $(ARG_FILE) $(KEY_FLAG) $(KEY_FILE) || true
+run_key:	screen $(VENV_DIR) exec
+	@./$(NAME) $(ARG_FLAG) $(ARG_FILE) || true
+
+run_otp:	screen $(VENV_DIR) exec
+	@./$(NAME) $(KEY_FLAG) $(KEY_FILE) || true
 
 # --- Clean Rules ---
 clean:
@@ -132,4 +135,4 @@ git:
 	git commit -m "($(NAME) - ex$$ex) [$$type]: $$msg"; \
 	git push
 
-.PHONY:		all re clean fclean git run exec check_packages screen
+.PHONY:		all re clean fclean git run_key run_otp exec check_packages screen

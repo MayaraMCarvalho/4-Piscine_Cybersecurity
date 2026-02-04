@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+.env
+ft_otp.key
+key.hex
+
+
+.DS_Store

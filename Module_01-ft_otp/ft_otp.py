@@ -15,19 +15,24 @@
 import argparse
 import string
 import os
+import time
+import hmac
+import hashlib
 
 from colorama import Fore, Style
+from cryptography.fernet import Fernet
+from dotenv import load_dotenv # type: ignore
 
 def main():
 	info()
 	args = parser_args()
 
 	if args.g:
-		args.key = get_key(args.g)
+		args.key = read_file(args.g)
 		validate_key(args.key)
 		store_key(args.key)
 	elif args.k:
-		args.key = get_key(args.k)
+		args.key = read_file(args.k)
 		generate_otp(args.key)
 
 def info():
@@ -40,7 +45,8 @@ def info():
 def parser_args():
 	'''
 	Parse command-line arguments for the ft_otp module.
-	Returns: argparse.Namespace: Parsed arguments.
+	Returns:
+		argparse.Namespace: Parsed arguments.
 	'''
 	parser = argparse.ArgumentParser(
 		description="ft_otp Module - One-Time Password Generator",
@@ -61,13 +67,17 @@ def parser_args():
 
 	return parser.parse_args()
 
-def get_key(file_path):
+def read_file(file_path):
 	'''
-	Read and return the content of the specified file.
+	Read the content of a file.
+	Args:
+		file_path (str): The path to the file.
+	Returns:
+		str: The content of the file.
 	'''
 	try:
 		with open(file_path, 'r', encoding="utf-8") as f:
-			key = f.read().strip()
+			content = f.read().strip()
 	except FileNotFoundError:
 		error_quick_exit(f"the file '{file_path}' does not exist.")
 	except PermissionError:
@@ -75,7 +85,7 @@ def get_key(file_path):
 	except Exception as e:
 		error_quick_exit(f"an error reading the file '{file_path}': {e}")
 
-	return key
+	return content
 
 def validate_key(key):
 	'''
@@ -93,6 +103,11 @@ def validate_key(key):
 		error_quick_exit("key must contain only hexadecimal characters (0-9, a-f).")
 
 def error_quick_exit(message):
+	'''
+	Print an error message and exit the program.
+	Args:
+		message (str): The error message to display.
+	'''
 	print(f"{Fore.RED}{Style.BRIGHT}ft_otp: error: {message}\n{Fore.RESET}")
 	exit(1)
 
@@ -102,14 +117,28 @@ def store_key(key):
 	Args:
 		key (str): The key to store.
 	'''
+	crypt = save_fernet_key()
 
-	# Criptografar key
+	f = Fernet(crypt)
+	token = f.encrypt(key.encode('utf-8'))
 
 	fd = os.open("ft_otp.key", os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
 	with os.fdopen(fd, 'w', encoding="utf-8") as f:
-		f.write(key)
+		f.write(token.decode('utf-8'))
 
 	print(f"{Fore.GREEN}{Style.BRIGHT}Key was successfully saved in ft_otp.key!{Style.RESET_ALL}\n")
+
+def save_fernet_key():
+	'''
+	Save the Fernet key used for encryption/decryption.
+	'''
+	crypt = Fernet.generate_key().decode('utf-8')
+
+	fd = os.open(".env", os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+	with os.fdopen(fd, 'w', encoding="utf-8") as f:
+		f.write(f"FERNET_KEY={crypt}\n")
+
+	return crypt
 
 def generate_otp(key):
 	'''
@@ -117,15 +146,42 @@ def generate_otp(key):
 	Args:
 		key (str): The key used for OTP generation.
 	'''
+	key = decrypt_key(key)
+	key = bytes.fromhex(key)
 
-	hash =  HMAC(key, time)
-	ofsset = hash[-1] & 0x0F
-	binary = hash[ofsset:ofsset + 4]
+	now = time.time() // 30
+	time_bytes = int(now).to_bytes(8, byteorder='big')
+
+	hash = hmac.new(key, time_bytes, hashlib.sha1).digest()
+	offset = hash[-1] & 0x0F
+	binary = hash[offset:offset + 4]
 	number = int.from_bytes(binary, byteorder='big') & 0x7FFFFFFF
-	otp = binary % 1000000
-	# otp = f"{otp:06d}"
+	otp = number % 1000000
+	otp = f"{otp:06d}"
 
 	print(otp)
+
+def decrypt_key(content):
+	'''
+	Load and decrypt the Fernet key from environment variables.
+	Args:
+		key (str): The encrypted key to decrypt.
+	Returns:
+		str: The decrypted key.
+	'''
+	load_dotenv()
+
+	crypt = os.environ.get('FERNET_KEY')
+	if not crypt:
+		error_quick_exit("Fernet key not found in environment variables.")
+
+	try:
+		f = Fernet(crypt)
+		key = f.decrypt(content.encode('utf-8')).decode('utf-8')
+	except Exception:
+		error_quick_exit("invalid token. Unable to decrypt the key.")
+
+	return key
 
 if __name__ == "__main__":
 	main()
