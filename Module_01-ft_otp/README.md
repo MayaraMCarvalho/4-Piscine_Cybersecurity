@@ -82,35 +82,33 @@ O projeto segue estritamente as especificações:
 
 ### 1. Registrar uma nova chave (`-g`)
 A chave deve ser uma string hexadecimal com pelo menos 64 caracteres.
-
-    ```bash
+   ```bash
     ./ft_otp -g <arquivo_com_chave_hex>
-    ```
+   ```
 *Isso criará o arquivo `ft_otp.key` criptografado e o `ft_otp_qr.png`.*
 
 ### 2. Gerar Token (`-k`)
 Gera um token instantâneo usando a chave salva anteriormente.
-
-    ```bash
+   ```bash
     ./ft_otp -k ft_otp.key
-    ```
+   ```
 *Saída esperada: Um código de 6 dígitos (ex: 123456).*
 
 **Validação Externa (Oathtool)**
 Você pode validar se o código gerado está correto comparando com o oathtool:
 
-    ```bash
+   ```bash
     oathtool --totp -b $(cat key.hex)
-    ```
+   ```
 
 ---
 
 ## 🎨 Interface Gráfica (GUI)
 Para uma experiência visual completa, utilize o comando abaixo. O Makefile garantirá que as permissões dos arquivos sensíveis (`chmod 600`) estejam corretas antes de abrir a janela.
 
-    ```bash
+   ```bash
     make interface
-    ```
+   ```
 
 **Recursos da Interface:**
 1. **Registro:** Cole sua chave Hex no campo superior e clique em "Save & Generate".
