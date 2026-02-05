@@ -3,7 +3,7 @@
 
 Available in: [🇧🇷 Português](README.md)
 
-![Language](https://img.shields.io/badge/language-Python-blue.svg) ![Security](https://img.shields.io/badge/security-TOTP-red.svg)
+![Language](https://img.shields.io/badge/language-Python-blue.svg) ![Security](https://img.shields.io/badge/security-TOTP-red.svg) ![GUI](https://img.shields.io/badge/interface-Tkinter-pink.svg)
 
 This project consists of implementing a **TOTP (Time-based One-Time Password)** authentication system. The goal is to create a program capable of generating ephemeral 6-digit time-based passwords, compatible with the RFC 6238 standard, similar to how Google Authenticator works.
 
@@ -15,14 +15,14 @@ This project consists of implementing a **TOTP (Time-based One-Time Password)** 
 * [Features](#-features)
 * [Technologies Used](#%EF%B8%8F-technologies-used)
 * [Installation & Setup](#-installation--setup)
-* [Usage](#-usage)
+* [Usage (CLI)](#-usage-cli)
 * [Author](#-author)
 
 ---
 
 ## 🔐 Overview
 
-`ft_otp` is a command-line tool that allows for the management of secret keys and the generation of two-factor authentication (2FA) tokens. It operates in two main modes: secure registration of a master key and generation of temporary tokens based on the HOTP/TOTP algorithm.
+`ft_otp` is a tool that allows for the management of secret keys and the generation of two-factor authentication (2FA) tokens. It operates via both **Command Line** and **Graphical Interface**, ensuring secure storage and ease of use.
 
 The project strictly follows these specifications:
 * **RFC 4226** (HOTP: HMAC-Based One-Time Password Algorithm)
@@ -32,20 +32,29 @@ The project strictly follows these specifications:
 
 ## ✨ Features
 
-* **Key Registration (`-g`):** Receives a hexadecimal key of 64+ characters and stores it securely (encrypted) in a file named `ft_otp.key`.
-* **Token Generation (`-k`):** Reads the stored key and generates a new 6-digit token valid for 30 seconds.
+* **Secure Registration (`-g`):** Receives a hexadecimal key (64+ chars) and stores it securely (encrypted) in `ft_otp.key`.
+* **Automatic QR Code:** Generates a `ft_otp_qr.png` file compatible with authenticator apps (Google Auth, Authy) upon registration.
+* **Token Generation (`-k`):** Generates a new 6-digit token valid for 30 seconds.
 * **Compatibility:** The generated tokens are verifiable by standard tools like `oathtool`.
+* **Graphical User Interface (GUI):**
+    * Real-time token display.
+    * Visual progress bar for expiration time.
+    * "Copy to Clipboard" button.
+    * Pop-up window to scan the QR Code.
 
 ---
 
 ## 🛠️ Technologies Used
 
 * **Language:** Python 3.x
-* **`hmac` & `hashlib`:** For implementing the hash algorithm (HMAC-SHA1).
-* **`struct`:** For byte manipulation and data conversion for dynamic truncation.
-* **`time`:** For capturing the Unix timestamp and calculating time steps.
-* **`argparse`:** For handling command-line arguments.
-* **`cryptography`:** For symmetric encryption of the key file.
+* **Encryption:** `cryptography` (Fernet/AES) for the key file.
+* **Algorithms:** `hmac`, `hashlib`, `struct`, and `time` for TOTP logic.
+* **Interface:** `tkinter` (Native) and `ttk` for the GUI.
+* **Utilities:**
+    * `qrcode` & `Pillow`: Image generation and display.
+    * `pyperclip`: Robust clipboard manipulation.
+    * `argparse`: Command-line arguments.
+    * `python-dotenv`: Environment variable management.
 
 ---
 
@@ -57,25 +66,18 @@ The project strictly follows these specifications:
     cd Module_01-ft_otp
     ```
 
-2.  **Create a virtual environment:**
+2.  **Automatic Setup (Makefile):**
+    This command creates the virtual environment, installs dependencies, and configures the executable.
     ```bash
-    python3 -m venv .venv
-    source .venv/bin/activate
+    make
     ```
 
-3.  **Install dependencies (if any):**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Grant execution permissions:**
-    ```bash
-    chmod +x ft_otp
-    ```
+    > **Note for Linux:** If the GUI fails to launch, install the system package:
+    > `sudo apt-get install python3-tk`
 
 ---
 
-## 🔧 Usage
+## 🔧 Usage (CLI)
 
 ### 1. Register a new key (`-g`)
 The key must be a hexadecimal string with at least 64 characters.
@@ -83,7 +85,7 @@ The key must be a hexadecimal string with at least 64 characters.
     ```bash
     ./ft_otp -g <file_containing_hex_key>
     ```
-*This will create the encrypted ft_otp.key file.*
+*This will create the encrypted `ft_otp.key` file and the `ft_otp_qr.png` image.*
 
 ### 2. Generate Token (`-k`)
 Generates an instant token using the previously saved key.
@@ -99,6 +101,22 @@ You can validate if the generated code is correct by comparing it with oathtool:
     ```bash
     oathtool --totp -b $(cat key.hex)
     ```
+
+---
+
+## 🎨 Graphical Interface (GUI)
+
+For a complete visual experience, use the command below. The Makefile ensures that sensitive file permissions (`chmod 600`) are correct before opening the window.
+
+    ```bash
+    make interface
+    ```
+
+**Interface Features:**
+1. **Register:** Paste your Hex key in the top field and click "Save & Generate".
+2. **QR Code:** Click "View QR" to open a pop-up and scan it with your phone.
+3. **Active Token:** The code updates automatically every 30 seconds.
+4. **Copy:** Click "Copy Token" to copy the code to your clipboard.
 
 ---
 
