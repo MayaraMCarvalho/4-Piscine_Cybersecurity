@@ -16,7 +16,7 @@ import tkinter as tk
 import ft_otp
 import time
 import os
-import pyperclip
+import pyperclip # type: ignore
 
 from tkinter import messagebox, ttk
 from PIL import Image, ImageTk
@@ -27,6 +27,7 @@ COLOR_ACCENT = "#D81B60" # Dark Pink (Main buttons)
 COLOR_TEXT = "#4A148C" # Dark Purple (Text)
 COLOR_TOKEN = "#C2185B" # Hot Pink (Token)
 COLOR_FRAME_BG = "#FFFFFF" # White (Frame background)
+COLOR_ERROR = "#B00020" # Red (Error messages)
 
 class OtpApp:
 	def __init__(self, root):
@@ -37,7 +38,6 @@ class OtpApp:
 		self.registration_area()
 		self.token_area()
 
-		# self.copy_button()
 		self.update_token_loop()
 
 	def main_screen(self):
