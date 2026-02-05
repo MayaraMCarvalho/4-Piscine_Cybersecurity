@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/30 11:03:02 by macarval          #+#    #+#              #
-#    Updated: 2026/02/04 17:45:51 by macarval         ###   ########.fr        #
+#    Updated: 2026/02/05 12:52:20 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ KEY="000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f"
 FILE_HEX="key.hex"
 FILE_KEY="ft_otp.key"
 BAD_FILE="bad_key.hex"
-TIMEOUT=1
+TIMEOUT=1 # Change to 35 for real-world testing.
 
 cleanup() {
 	rm -f $FILE_HEX $FILE_ENC $BAD_FILE .env
