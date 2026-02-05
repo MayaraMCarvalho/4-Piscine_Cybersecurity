@@ -81,36 +81,32 @@ The project strictly follows these specifications:
 
 ### 1. Register a new key (`-g`)
 The key must be a hexadecimal string with at least 64 characters.
-
-    ```bash
+   ```bash
     ./ft_otp -g <file_containing_hex_key>
-    ```
+   ```
 *This will create the encrypted `ft_otp.key` file and the `ft_otp_qr.png` image.*
 
 ### 2. Generate Token (`-k`)
 Generates an instant token using the previously saved key.
-
-    ```bash
+   ```bash
     ./ft_otp -k ft_otp.key
-    ```
+   ```
 *Expected output: A 6-digit code (e.g., 123456).*
 
 **External Validation (Oathtool)**
 You can validate if the generated code is correct by comparing it with oathtool:
-
-    ```bash
+   ```bash
     oathtool --totp -b $(cat key.hex)
-    ```
+   ```
 
 ---
 
 ## 🎨 Graphical Interface (GUI)
 
 For a complete visual experience, use the command below. The Makefile ensures that sensitive file permissions (`chmod 600`) are correct before opening the window.
-
-    ```bash
+   ```bash
     make interface
-    ```
+   ```
 
 **Interface Features:**
 1. **Register:** Paste your Hex key in the top field and click "Save & Generate".
