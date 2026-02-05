@@ -16,6 +16,7 @@ This project consists of implementing a **TOTP (Time-based One-Time Password)** 
 * [Technologies Used](#%EF%B8%8F-technologies-used)
 * [Installation & Setup](#-installation--setup)
 * [Usage (CLI)](#-usage-cli)
+* [Graphical Interface (GUI)](#-graphical-interface-gui)
 * [Author](#-author)
 
 ---
