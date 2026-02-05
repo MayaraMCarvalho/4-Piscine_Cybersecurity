@@ -8,9 +8,9 @@ cryptography>=3.4.7
 python-dotenv>=0.19.2
 qrcode>=7.3.1
 pillow>=8.3.2
+pyperclip>=1.8.2
 
 # To install the dependencies, run:
 # pip install -r requirements.txt
-# Make sure to use a virtual environment to avoid conflicts with other projects.
 
 # End of requirements.txt

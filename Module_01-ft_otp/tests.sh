@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/30 11:03:02 by macarval          #+#    #+#              #
-#    Updated: 2026/02/05 12:52:20 by macarval         ###   ########.fr        #
+#    Updated: 2026/02/05 15:27:01 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ purple='\033[35;1m'
 gray='\033[37;1m'
 reset='\033[0m'
 
-PROGRAM="./ft_otp.py"
+PROGRAM="./ft_otp"
 
 KEY="000102030405060708090a0b0c0d0e0f000102030405060708090a0b0c0d0e0f"
 FILE_HEX="key.hex"
@@ -33,7 +33,7 @@ BAD_FILE="bad_key.hex"
 TIMEOUT=1 # Change to 35 for real-world testing.
 
 cleanup() {
-	rm -f $FILE_HEX $FILE_ENC $BAD_FILE .env
+	rm -f $FILE_HEX $FILE_KEY $BAD_FILE *.png .env $PROGRAM
 }
 
 total_tests=0
@@ -98,7 +98,7 @@ echo -e "-----------------------------------------------------------------------
 (( total_tests++ ))
 echo -n "000102030405060708090a0b0c0d0e" > $BAD_FILE
 
-ERROR_MSG=$(${PROGRAM} -g $BAD_FILE | tail -n 2 2>&1)
+ERROR_MSG=$(${PROGRAM} -g $BAD_FILE 2>&1 | tail -n 2)
 
 echo -en "${yellow}Test ${purple}#$total_tests: \n${red}${ERROR_MSG}\n${reset}"
 
@@ -117,7 +117,7 @@ echo -e "-----------------------------------------------------------------------
 (( total_tests++ ))
 echo -n "${KEY}1" > $BAD_FILE
 
-ERROR_MSG=$(${PROGRAM} -g $BAD_FILE | tail -n 2 2>&1)
+ERROR_MSG=$(${PROGRAM} -g $BAD_FILE 2>&1 | tail -n 2)
 
 echo -en "${yellow}Test ${purple}#$total_tests: \n${red}${ERROR_MSG}\n${reset}"
 
@@ -136,7 +136,7 @@ echo -e "-----------------------------------------------------------------------
 (( total_tests++ ))
 echo -n "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" > $BAD_FILE
 
-ERROR_MSG=$(${PROGRAM} -g $BAD_FILE | tail -n 2 2>&1)
+ERROR_MSG=$(${PROGRAM} -g $BAD_FILE 2>&1 | tail -n 2)
 
 echo -en "${yellow}Test ${purple}#$total_tests: \n${red}${ERROR_MSG}\n${reset}"
 
@@ -153,7 +153,7 @@ echo -e "7. Testing for a non-existent file..."
 echo -e "-------------------------------------------------------------------------${reset}"
 
 (( total_tests++ ))
-ERROR_MSG=$(${PROGRAM} -g non_existent_file | tail -n 2 2>&1)
+ERROR_MSG=$(${PROGRAM} -g non_existent_file 2>&1 | tail -n 2)
 
 echo -en "${yellow}Test ${purple}#$total_tests: \n${red}${ERROR_MSG}\n${reset}"
 

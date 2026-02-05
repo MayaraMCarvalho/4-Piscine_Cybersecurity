@@ -16,6 +16,7 @@ import tkinter as tk
 import ft_otp
 import time
 import os
+import pyperclip
 
 from tkinter import messagebox, ttk
 from PIL import Image, ImageTk
@@ -163,11 +164,11 @@ class OtpApp:
 
 		self.create_progress_bar()
 
-		btn_copy = tk.Button(self.frame_token, text="Copy Token",
+		self.btn_copy = tk.Button(self.frame_token, text="Copy Token",
 						command=self.copy_to_clipboard,
 						relief="groove", bg="#F5F5F5", fg="#333",
 						font=("Verdana", 9))
-		btn_copy.pack(pady=15, ipadx=10)
+		self.btn_copy.pack(pady=15, ipadx=10)
 
 	def create_progress_bar(self):
 		self.progress = ttk.Progressbar(self.frame_token, orient="horizontal",
@@ -182,12 +183,20 @@ class OtpApp:
 		token = self.lbl_token.cget("text").replace(" ", "")
 
 		if token and token.isdigit():
-			self.root.clipboard_clear()
-			self.root.clipboard_append(token)
-			self.btn_copy.configure(text="Copied!", bg="#E8F5E9")
-			self.root.after(1500,
-				lambda: self.btn_copy.configure(text="Copy Token",
-														bg="#F5F5F5"))
+			try:
+				pyperclip.copy(token)
+
+				self.btn_copy.configure(text="Copied!", bg="#E8F5E9")
+				self.root.after(1500,
+					lambda: self.btn_copy.configure(text="Copy Token",
+															bg="#F5F5F5"))
+
+			except Exception as e:
+				print(f"Pyperclip error: {str(e)}. Trying native...")
+				self.root.clipboard_clear()
+				self.root.clipboard_append(token)
+				self.root.update()
+
 		else:
 			messagebox.showwarning("Wait",
 						"No active token to copy.\nPlease register a key first.")

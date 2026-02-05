@@ -6,7 +6,7 @@
 #    By: macarval <macarval@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/19 16:33:22 by macarval          #+#    #+#              #
-#    Updated: 2026/02/04 17:45:30 by macarval         ###   ########.fr        #
+#    Updated: 2026/02/05 15:29:51 by macarval         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ PIP			= $(VENV_DIR)/bin/pip
 all:		$(VENV_DIR) exec
 
 $(VENV_DIR):	requirements.txt
-	clear
+	@clear
 	@echo "$(BBLUE)\nCreating virtual environment in $(VENV_DIR)...$(RESET)"
 	@python3 -m venv $(VENV_DIR) > /dev/null || ( \
 		echo ""; \
@@ -79,14 +79,26 @@ exec:
 	@chmod +x $(NAME)
 	@echo "$(BCYAN)$(NAME): $(BGREEN)Executável $(NAME) criado!$(RESET)\n"
 
-screen:
-	clear
-
-run_key:	screen $(VENV_DIR) exec
+run_key:	all
 	@./$(NAME) $(ARG_FLAG) $(ARG_FILE) || true
 
-run_otp:	screen $(VENV_DIR) exec
+run_otp:	all
 	@./$(NAME) $(KEY_FLAG) $(KEY_FILE) || true
+
+interface:	all
+	@clear
+	@echo "$(BBLUE)Running the ft_otp interface...$(RESET)"
+	@chmod 600 .env ft_otp.key 2>/dev/null || true
+	@chmod +x gui.py
+
+	@echo "$(BPURPLE)Opening ft_otp Authenticator...$(RESET)"
+	@$(PYTHON) gui.py || ( \
+		echo "$(BRED)\n[ERROR] Failed to open the GUI..$(RESET)"; \
+		echo "If the error is 'No module named tkinter', run the following in the terminal:"; \
+		echo "$(BYELLOW)sudo apt-get install python3-tk$(RESET)\n"; \
+		exit 1 \
+	)
+	@echo "$(BGREEN)\nApplication closed safely.$(RESET)"
 
 tests:
 	bash ./tests.sh
