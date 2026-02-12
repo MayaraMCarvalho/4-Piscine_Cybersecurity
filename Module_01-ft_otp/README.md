@@ -106,6 +106,9 @@ Você pode validar se o código gerado está correto comparando com o oathtool:
 ---
 
 ## 🎨 Interface Gráfica (GUI)
+
+![Interface Gráfica do ft_otp](ft_otp_gui.jpeg)
+
 Para uma experiência visual completa, utilize o comando abaixo. O Makefile garantirá que as permissões dos arquivos sensíveis (`chmod 600`) estejam corretas antes de abrir a janela.
 
     ```bash
