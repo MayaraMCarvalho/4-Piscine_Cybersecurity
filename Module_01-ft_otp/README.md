@@ -105,13 +105,9 @@ Você pode validar se o código gerado está correto comparando com o oathtool:
 
 ## 🎨 Interface Gráfica (GUI)
 
-<div align="center"> <img src="https://github.com/user-attachments/assets/b59525ee-bd94-4c70-9cb9-a214a9d95182" alt="ft_otp Interface Gráfica" width="600"> </div>
-
 <div align="center">
-  <img src="[ft_otp_gui.jpeg](https://github.com/user-attachments/assets/b59525ee-bd94-4c70-9cb9-a214a9d95182)" alt="Interface Gráfica" width="600">
+   <img src="https://github.com/user-attachments/assets/b59525ee-bd94-4c70-9cb9-a214a9d95182" alt="ft_otp Interface Gráfica" width="600">
 </div>
-
-![ft_otp_gui](https://github.com/user-attachments/assets/b59525ee-bd94-4c70-9cb9-a214a9d95182)
 
 Para uma experiência visual completa, utilize o comando abaixo. O Makefile garantirá que as permissões dos arquivos sensíveis (`chmod 600`) estejam corretas antes de abrir a janela.
 
