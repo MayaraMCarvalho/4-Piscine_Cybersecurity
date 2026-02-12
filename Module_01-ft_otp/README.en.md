@@ -104,7 +104,9 @@ You can validate if the generated code is correct by comparing it with oathtool:
 
 ## 🎨 Graphical Interface (GUI)
 
-![Interface Gráfica do ft_otp](ft_otp_gui.jpeg)
+<div align="center">
+   <img src="https://github.com/user-attachments/assets/b59525ee-bd94-4c70-9cb9-a214a9d95182" alt="ft_otp Interface Gráfica" width="600">
+</div>
 
 For a complete visual experience, use the command below. The Makefile ensures that sensitive file permissions (`chmod 600`) are correct before opening the window.
    ```bash
