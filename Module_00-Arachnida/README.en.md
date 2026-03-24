@@ -4,6 +4,11 @@ Available in: [🇧🇷 Português](README.md)
 
 ![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)
 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/ba23bfc6-8bd3-4f4a-a4d1-2a3fb3068984" alt="common_coren" width="200">
+</div>
+
 This project is an introduction to Web Scraping and Metadata Analysis, as part of the Cybersecurity Piscine. The project consists of two command-line tools: `spider` and `scorpion`, both developed in Python.
 
 ---
