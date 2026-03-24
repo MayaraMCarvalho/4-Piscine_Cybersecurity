@@ -5,6 +5,10 @@ Available in: [🇺🇸 English](README.en.md)
 
 ![Language](https://img.shields.io/badge/language-Python-blue.svg) ![Security](https://img.shields.io/badge/security-TOTP-red.svg) ![GUI](https://img.shields.io/badge/interface-Tkinter-pink.svg)
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/e24a8c31-61d2-4d1f-a4ec-0cd58fc84b60" alt="common_coren" width="200">
+</div>
+
 Este projeto consiste na implementação de um sistema de autenticação **TOTP (Time-based One-Time Password)**. O objetivo é criar um programa capaz de gerar senhas efêmeras de 6 dígitos baseadas em tempo, compatível com o padrão RFC 6238, similar ao funcionamento do Google Authenticator.
 
 ---
